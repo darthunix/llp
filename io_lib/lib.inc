@@ -15,3 +15,13 @@ string_length:
         jmp .loop
     .end:
         ret         ; pop rip and finish call
+
+print_string:
+    push rdi            ; save rdi with string address on a stack (can be changed by call string_length)
+    call string_length  ; put string length in rax
+    pop rsi             ; restore string address from stack to rsi to output string
+    mov rdx, rax        ; set rdx output string length (from rax)
+    mov rax, 1          ; set rax systemcall for write
+    mov rdi, 1          ; set rdi file descriptor for stdout (1)
+    syscall
+    ret
