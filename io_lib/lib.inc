@@ -24,4 +24,15 @@ print_string:
     mov rax, 1          ; set rax systemcall for write
     mov rdi, 1          ; set rdi file descriptor for stdout (1)
     syscall
+    mov rdi, rsi        ; restore rdi register
+    ret
+
+print_char:
+    push rdi            ; save rdi whith char address on a stack
+    mov rsi, rdi        ; set rsi char address
+    mov rdx, 1          ; set rdx output string length = 1
+    mov rax, 1          ; set rax systemcall for write
+    mov rdi, 1          ; set rdi file descriptor for stdout (1)
+    syscall
+    pop rdi             ; restore initial rdi (can be changed by call)
     ret
