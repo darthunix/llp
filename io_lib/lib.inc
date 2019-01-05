@@ -1,3 +1,7 @@
+section .data
+newline: db 0xA
+
+section .text
 exit:
     mov rax, 60     ; set rax "exit" syscall number (60)
     xor rdi, rdi    ; set rdi exit code (0)
@@ -19,12 +23,12 @@ string_length:
 print_string:
     push rdi            ; save rdi with string address on a stack (can be changed by call string_length)
     call string_length  ; put string length in rax
-    pop rsi             ; restore string address from stack to rsi to output string
+    mov rsi, rdi        ; set rsi string address to output string
     mov rdx, rax        ; set rdx output string length (from rax)
     mov rax, 1          ; set rax systemcall for write
     mov rdi, 1          ; set rdi file descriptor for stdout (1)
     syscall
-    mov rdi, rsi        ; restore rdi register
+    pop rdi             ; restore rdi register from stack
     ret
 
 print_char:
@@ -35,4 +39,11 @@ print_char:
     mov rdi, 1          ; set rdi file descriptor for stdout (1)
     syscall
     pop rdi             ; restore initial rdi (can be changed by call)
+    ret
+
+print_newline:
+    push rdi            ; save rdi on a stack
+    mov rdi, newline    ; set rdi new line code
+    call print_char
+    pop rdi             ; restore rdi from stack
     ret

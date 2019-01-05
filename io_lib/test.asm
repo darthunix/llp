@@ -26,4 +26,5 @@ _start:
     call print_string
     mov rdi, test_string_char
     call print_char
+    call print_newline
     call exit
