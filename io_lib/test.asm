@@ -4,8 +4,7 @@ global _start
 section .data
 success_string_length: db "success: string_length", 10, 0
 fail_string_length: db "failed: string_length", 10, 0   ; 22 + null-terminator
-message_string_char: db "If you see '$' char test have passed", 10, 0
-test_string_char: db 0x24 
+message_string_char: db "If you see '$' char test have passed", 10, 0   ; $ = 0x24
 
 section .text
 _start:
@@ -24,7 +23,10 @@ _start:
     ; test call string_char
     mov rdi, message_string_char
     call print_string
-    mov rdi, test_string_char
+    mov rdi, 0x24               ; '$' = 0x24
     call print_char
+    call print_newline
+    mov rdi, 0x99
+    call print_uint
     call print_newline
     call exit
